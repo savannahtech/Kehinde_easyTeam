@@ -1,0 +1,8 @@
+{
+    "type": "mongodb",
+    "url": "mongodb://tester:jq9oq4ZFMDv@mongo:27017",
+    "autoLoadEntities": true,
+    "entities": [
+        "src/modules/**/entities/*.ts"
+    ]
+}

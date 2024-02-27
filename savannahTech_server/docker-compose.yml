@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  client:
+    container_name: "${APP_NAME:-'test'}_client"
+    build:
+      context: ../client
+      dockerfile: Dockerfile
+    ports:
+      - "${CLIENT_PORT:-3000}:3000"
+    volumes:
+      - "../client:/app"
+    networks:
+      - test
+  server:
+    container_name: "${APP_NAME:-'test'}_server"
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "${SERVER_PORT:-4000}:3000"
+    volumes:
+      - "./:/app"
+    networks:
+      - test
+  mongo:
+    image: mongo:latest
+    container_name: "${APP_NAME:-'test'}_mongodb"
+    ports:
+      - "${MONGODB_PORT:-27017}:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME:-''}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD:-''}"
+    volumes:
+      - test_mongodb-data:/data/db
+    networks:
+      - test
+networks:
+  test:
+    driver: bridge
+
+volumes:
+  test_mongodb-data:
